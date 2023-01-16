@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.backBtn {
+  width: 10em;
+  height: 3em;
+  margin-bottom: 10px;
+  border: none;
+  background: #ffdf8c;
+  font-size: medium;
+  font-weight: bold;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background: #ffdfab;
+  }
+
+  &:active {
+    background: #ffd484;
+  }
+}
