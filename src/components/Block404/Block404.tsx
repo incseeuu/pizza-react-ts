@@ -8,7 +8,7 @@ const Block404 = () => {
     return (
         <div className={classes.main}>
             <h1>Страницы не существует😥</h1>
-            <NavLink to={'/'}>
+            <NavLink to={'/*'}>
                 <button className={classes.backBtn}>Вернуться</button>
             </NavLink>
             <img className={classes.img} src={image404} alt={'Not found'}/>

@@ -2,7 +2,7 @@
   "name": "pizza-react-ts",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://incseeuu.github.io/pizza-react-ts",
+  "homepage": "https://incseeuu.github.io/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
