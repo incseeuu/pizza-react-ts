@@ -11,7 +11,7 @@
   height: 3em;
   margin-bottom: 10px;
   border: none;
-  background: #ffdf8c;
+  background: #e3a6f8;
   font-size: medium;
   font-weight: bold;
   color: white;
@@ -19,10 +19,10 @@
   cursor: pointer;
 
   &:hover {
-    background: #ffdfab;
+    background: #c78dfd;
   }
 
   &:active {
-    background: #ffd484;
+    background: #c78dfd;
   }
 }

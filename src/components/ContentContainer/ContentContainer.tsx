@@ -12,11 +12,13 @@ type ContentContainerType = {
 
 const ContentContainer = (props: ContentContainerType) => {
 
-    return (
-        <div className="content__items">
-            {props.loading ? [...new Array(8)].map((el, index) => <Skeleton key={index}/>)
-                : props.state.map(el => <PizzaBlock key={el.id} {...el}/>)}
-        </div>
+    return ( props.state.length > 0
+            ? <div className="content__items">
+                {props.loading ? [...new Array(8)].map((el, index) => <Skeleton key={index}/>)
+                    : props.state.map(el => <PizzaBlock key={el.id} {...el}/>)}
+            </div>
+            : <h2>Ничего не найдено 😥</h2>
+
     );
 };
 

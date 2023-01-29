@@ -1,5 +1,4 @@
 import React from 'react';
-import {v1} from "uuid";
 
 type SortPropsType = {
     sortChangeState: string
@@ -37,6 +36,7 @@ const Sort: React.FC<SortPropsType> = ({sortChangeState,setSorChangeState}) => {
                 key={index}
                 className={sortChangeState === el.sort ? 'active' : ''}
                 onClick={() => onClickHandlerActiveSort(el.sort)}
+                onBlur={() => onClickHandlerActiveSort(el.sort)}
             >
                 {el.name}</li>
         )
