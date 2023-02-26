@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import ContentContainer from "../components/ContentContainer/ContentContainer";
 import SearchInput from "../components/SearchInput/SearchInput";
 import Pagination from "../components/Pagination/Pagination";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../redux/store";
+import {pizzaApi} from "../api/api";
+import qs from "qs"
+import {useNavigate} from "react-router-dom";
+import {ActionsFilterType, changeFilters} from "../redux/slices/filterSlice";
 
 
 export type StatePizzasType = {
@@ -24,29 +30,65 @@ export type PizzasSize = 26 | 30 | 40
 const Home = () => {
     const [valueSearch, setValueSearchInput] = React.useState('')
     const [stateFromServer, setStateFromServer] = React.useState([])
-    const [sortChangeState, setSorChangeState] = React.useState<string>('rating')
-    const [categoriesChangeState, setCategoriesChangeState] = React.useState<string>('all')
     const [loading, setLoading] = React.useState(true)
-    const [page, setPage] = React.useState(1)
-    console.log(page)
 
-    React.useEffect(() => {
+    //вытаскиваем стейт из redux toolkit
+    const {categories, sort, page} = useSelector((state: RootState) => state.filterReducer)
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const isParams = useRef(false)
+    const isMounted = useRef(false)
+
+    const fetchPizzas = () => {
         setLoading(true)
 
-        const categoriesFilter = categoriesChangeState === 'all' ? '' : `category=${categoriesChangeState}`
+        const categoriesFilter = categories === 'all' ? '' : `category=${categories}`
         const search = valueSearch ? `search=${valueSearch}` : ''
-        const sortBy = sortChangeState === 'all' ? '' : `sortBy=${sortChangeState.replace('-', '')}`
-        const order = sortChangeState === "-price" ? 'order=desc' : 'order=asc'
+        const sortBy = sort === 'all' ? '' : `sortBy=${sort.replace('-', '')}`
+        const order = sort === "-price" ? 'order=desc' : 'order=asc'
 
 
-        fetch(`https://63b3fb469f50390584a335c8.mockapi.io/items?page=${page}&limit=8&${categoriesFilter}&${sortBy}&${order}&${search}`)
-            .then(res => res.json())
-            .then(data => {
-                setStateFromServer(data)
+        pizzaApi.getPizza(page,categoriesFilter,sortBy, order,search)
+            .then(res => {
+                setStateFromServer(res.data)
                 setLoading(false)
             })
+    }
+
+    React.useEffect(() => {
+
+        if(!isParams.current){
+            fetchPizzas()
+        }
+
+        isParams.current = false
+
         window.scrollTo(0, 0)
-    }, [categoriesChangeState, sortChangeState, valueSearch, page])
+    }, [categories, sort, valueSearch, page])
+
+    //если первого ренедра не было, не сохраняй парметры в URL, реагируй только на последующие действия
+    React.useEffect(()=> {
+        if(isMounted.current){
+            const queryString = qs.stringify({
+                page,
+                categories,
+                sort,
+            })
+
+            navigate(`?${queryString}`)
+        }
+        isMounted.current = true
+    }, [categories, sort, page])
+
+    //если был первый рендер, то проверяем URL и сохраняем параметры в Redux
+    React.useEffect(() => {
+        if(window.location.search){
+            const params = qs.parse(window.location.search.substring(1))
+
+         dispatch(changeFilters({...params as ActionsFilterType}))
+            isParams.current = true
+        }
+    }, [])
 
 
     return (
@@ -54,22 +96,15 @@ const Home = () => {
             <div className="content">
                 <div className="container">
                     <div className="content__top">
-                        <Categories
-                            categoriesChangeState={categoriesChangeState}
-                            setCategoriesChangeState={setCategoriesChangeState}
-
-                        />
-                        <Sort
-                            sortChangeState={sortChangeState}
-                            setSorChangeState={setSorChangeState}
-                        />
+                        <Categories/>
+                        <Sort/>
                     </div>
                     <div className="content--container__title">
                         <h2 className="content__title">Все пиццы</h2>
-                        <SearchInput setValueSearchInput={setValueSearchInput} valueSearchInput={valueSearch}/>
+                        <SearchInput setValueSearchInput={setValueSearchInput} />
                     </div>
                     <ContentContainer state={stateFromServer} loading={loading}/>
-                    <Pagination setPage={setPage} page={page}/>
+                    <Pagination />
                 </div>
             </div>
         </>
