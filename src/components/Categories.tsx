@@ -1,10 +1,7 @@
 import React from 'react';
-import {v1} from "uuid";
-
-type CategoriesPropsType = {
-    categoriesChangeState: string
-    setCategoriesChangeState: (categoriesChangeState: string) => void
-}
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../redux/store";
+import {changeCategories} from "../redux/slices/filterSlice";
 
 type CategoriesStateType = {
     filter: string
@@ -20,14 +17,17 @@ const categoriesState: CategoriesStateType[] = [
     {filter: 'close', name: 'Закрытые'},
 ]
 
-const Categories: React.FC<CategoriesPropsType> = ({setCategoriesChangeState, categoriesChangeState}) => {
+const Categories = () => {
 
+    const categoriesChangeState = useSelector((state: RootState) => state.filterReducer.categories)
+
+    const dispatch = useDispatch()
 
     const mappingCategories = categoriesState.map((el, index) => {
         return (
             <li key={index}
                 className={categoriesChangeState === el.filter ? 'active' : ''}
-                onClick={() => setCategoriesChangeState(el.filter)}>{el.name}</li>
+                onClick={() => dispatch(changeCategories(el.filter))}>{el.name}</li>
         )
     })
 

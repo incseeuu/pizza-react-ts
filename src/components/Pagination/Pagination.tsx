@@ -1,23 +1,50 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import classes from './Pagination.module.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../redux/store";
+import {changePage} from "../../redux/slices/filterSlice";
 
-type PropsType = {
-    page: number
-    setPage: (page: number) => void
-}
+type PropsType = {}
 
-const Pagination: React.FC<PropsType> = ({setPage, page}) => {
+const Pagination: React.FC<PropsType> = () => {
+
+    const page = useSelector((state: RootState) => state.filterReducer.page)
+    const dispatch = useDispatch()
 
     return (
         <div className={classes.wrap}>
-            <div onClick={page > 1 ? () => { setPage(page - 1)} : () => { setPage(page)}} className={classes.control}>{'<'}</div>
+            <div onClick={page > 1 ? () => {
+                dispatch(changePage(page - 1))
+            } : () => {
+                dispatch(changePage(page))
+            }}
+                 className={classes.control}>{'<'}</div>
             <div className={classes.pages}>
-                <span onClick={() => {setPage(1)}} className={classes.page + (page === 1 ?  ' ' + classes.active : '')}>1</span>
-                <span onClick={() => {setPage(2)}} className={classes.page + (page === 2 ?  ' ' + classes.active : '')}>2</span>
-                <span onClick={() => {setPage(3)}} className={classes.page + (page === 3 ?  ' ' + classes.active : '')}>3</span>
+                <span
+                    onClick={() => {
+                        dispatch(changePage(1))
+                    }}
+                    className={classes.page + (page === 1 ? ' ' + classes.active : '')}>1</span>
+                <span
+                    onClick={() => {
+                        dispatch(changePage(2))
+                    }}
+                    className={classes.page + (page === 2 ? ' ' + classes.active : '')}>2</span>
+                <span
+                    onClick={() => {
+                        dispatch(changePage(3))
+                    }}
+                    className={classes.page + (page === 3 ? ' ' + classes.active : '')}>3</span>
             </div>
-            <div onClick={page < 3 ? () => { setPage(page + 1)} : () => { setPage(page)}} className={classes.control}>{'>'}</div>
+            <div
+                onClick={page < 3
+                    ? () => {
+                        dispatch(changePage(page + 1))
+                    }
+                    : () => {
+                        dispatch(changePage(page))
+                    }}
+                className={classes.control}>{'>'}</div>
         </div>
     );
 };

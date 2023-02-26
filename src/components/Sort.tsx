@@ -1,16 +1,17 @@
 import React from 'react';
-
-type SortPropsType = {
-    sortChangeState: string
-    setSorChangeState: (sortChangeState: string) => void
-}
+import {useDispatch, useSelector} from "react-redux";
+import { changeSort } from '../redux/slices/filterSlice';
+import {RootState} from "../redux/store";
 
 type SortNameType = {
     sort: string
     name: string
 }
 
-const Sort: React.FC<SortPropsType> = ({sortChangeState,setSorChangeState}) => {
+const Sort = () => {
+
+    const sortChangeState = useSelector((state: RootState) => state.filterReducer.sort)
+    const dispatch = useDispatch()
 
     const sortName: SortNameType[] = [
         {sort: 'rating', name: 'популярности'},
@@ -26,7 +27,7 @@ const Sort: React.FC<SortPropsType> = ({sortChangeState,setSorChangeState}) => {
     }
 
     const onClickHandlerActiveSort = (name: string) => {
-        setSorChangeState(name)
+        dispatch(changeSort(name))
         setViewSort(false)
     }
 

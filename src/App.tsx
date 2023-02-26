@@ -1,8 +1,7 @@
 import React from 'react';
 import './scss/app.scss';
-
 import Header from "./components/Header";
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import Page404 from "./pages/Page404";
@@ -19,9 +18,8 @@ function App() {
             <Header/>
             <Routes>
                 <Route path={'/'} element={<Home/>}/>
-                <Route path={'/pizza-react-ts/'} element={<Navigate to='/'/>}/>
                 <Route path={'/cart'} element={<Cart/>}/>
-                <Route path={'/*'} element={<Page404/>}/>
+                <Route path={'*'} element={<Page404/>}/>
             </Routes>
         </div>
     );
