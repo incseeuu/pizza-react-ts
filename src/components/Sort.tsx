@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import { changeSort } from '../redux/slices/filterSlice';
 import {RootState} from "../redux/store";
@@ -22,6 +22,26 @@ const Sort = () => {
 
     const [viewSort, setViewSort] = React.useState<boolean>(false)
 
+    const sortRef = useRef<HTMLDivElement>(null)
+
+
+
+    useEffect(() => {
+
+        const clickHandler = (event: MouseEvent) => {
+            if(sortRef && sortRef.current){
+                if(!event.composedPath().includes(sortRef.current)){
+                    setViewSort(false)
+                }
+            }
+        }
+
+        document.body.addEventListener('click', clickHandler)
+
+        return () =>{
+            document.body.removeEventListener('click', clickHandler)
+        }
+    }, [])
     const onClickHandlerViewSort = () => {
         setViewSort(!viewSort)
     }
@@ -46,7 +66,7 @@ const Sort = () => {
     const sortChangeName = sortName.find(el => el.sort === sortChangeState)
 
     return (
-        <div className="sort">
+        <div className="sort" ref={sortRef}>
             <div className="sort__label">
                 <svg
                     width="10"

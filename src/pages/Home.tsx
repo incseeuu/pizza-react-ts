@@ -11,22 +11,6 @@ import qs from "qs"
 import {useNavigate} from "react-router-dom";
 import {ActionsFilterType, changeFilters} from "../redux/slices/filterSlice";
 
-
-export type StatePizzasType = {
-    id: string
-    imageUrl: string
-    title: string
-    types: PizzasTypes[]
-    sizes: PizzasSize[]
-    price: number
-    category: number
-    rating: number
-}
-
-export type PizzasTypes = 0 | 1
-
-export type PizzasSize = 26 | 30 | 40
-
 const Home = () => {
     const [valueSearch, setValueSearchInput] = React.useState('')
     const [stateFromServer, setStateFromServer] = React.useState([])
@@ -39,7 +23,7 @@ const Home = () => {
     const isParams = useRef(false)
     const isMounted = useRef(false)
 
-    const fetchPizzas = () => {
+    const fetchPizzas = async () => {
         setLoading(true)
 
         const categoriesFilter = categories === 'all' ? '' : `category=${categories}`
@@ -48,16 +32,12 @@ const Home = () => {
         const order = sort === "-price" ? 'order=desc' : 'order=asc'
 
 
-        pizzaApi.getPizza(page,categoriesFilter,sortBy, order,search)
-            .then(res => {
-                setStateFromServer(res.data)
-                setLoading(false)
-            })
+
     }
 
     React.useEffect(() => {
 
-        if(!isParams.current){
+        if (!isParams.current) {
             fetchPizzas()
         }
 
@@ -67,8 +47,8 @@ const Home = () => {
     }, [categories, sort, valueSearch, page])
 
     //если первого ренедра не было, не сохраняй парметры в URL, реагируй только на последующие действия
-    React.useEffect(()=> {
-        if(isMounted.current){
+    React.useEffect(() => {
+        if (isMounted.current) {
             const queryString = qs.stringify({
                 page,
                 categories,
@@ -82,10 +62,10 @@ const Home = () => {
 
     //если был первый рендер, то проверяем URL и сохраняем параметры в Redux
     React.useEffect(() => {
-        if(window.location.search){
+        if (window.location.search) {
             const params = qs.parse(window.location.search.substring(1))
 
-         dispatch(changeFilters({...params as ActionsFilterType}))
+            dispatch(changeFilters({...params as ActionsFilterType}))
             isParams.current = true
         }
     }, [])
@@ -101,10 +81,10 @@ const Home = () => {
                     </div>
                     <div className="content--container__title">
                         <h2 className="content__title">Все пиццы</h2>
-                        <SearchInput setValueSearchInput={setValueSearchInput} />
+                        <SearchInput setValueSearchInput={setValueSearchInput}/>
                     </div>
                     <ContentContainer state={stateFromServer} loading={loading}/>
-                    <Pagination />
+                    <Pagination/>
                 </div>
             </div>
         </>

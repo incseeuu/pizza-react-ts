@@ -2,14 +2,16 @@ import React from 'react';
 
 type PizzaBlockBottomType = {
     price: number
+    callback: () => void
+    count: number | undefined
 }
 
-const PizzaBlockBottom: React.FC<PizzaBlockBottomType> = ({price}) => {
+const PizzaBlockBottom: React.FC<PizzaBlockBottomType> = ({price, callback, count}) => {
 
     return (
         <div className="pizza-block__bottom">
             <div className="pizza-block__price">от {price} ₽</div>
-            <button className="button button--outline button--add">
+            <button className="button button--outline button--add" onClick={callback}>
                 <svg
                     width="12"
                     height="12"
@@ -22,8 +24,8 @@ const PizzaBlockBottom: React.FC<PizzaBlockBottomType> = ({price}) => {
                         fill="white"
                     />
                 </svg>
-                <span>Добавить</span>
-                <i>1</i>
+                <span >Добавить</span>
+                {count && count > 0 && <i>{count}</i>}
             </button>
         </div>
     );

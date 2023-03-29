@@ -1,38 +1,49 @@
 import React from 'react';
 import PizzaBlockBottom from "./PizzaBlockBottom/PizzaBlockBottom";
-import {PizzasSize, PizzasTypes} from "../../../pages/Home";
+import {useDispatch, useSelector} from "react-redux";
+import {addPizzaItem, PizzaCartStateType, PizzaItemTypeWithCount} from "../../../redux/slices/cartSlice";
+import {RootState} from "../../../redux/store";
+import {StatePizzasType} from '../../../redux/slices/pizzaSlice';
 
 
 type PizzaBlockType = {
-    id: string
-    imageUrl: string
-    title: string
-    price: number
-    types: PizzasTypes[]
-    sizes: PizzasSize[]
+    pizzaItem: StatePizzasType
 }
 
-const PizzaBlock: React.FC<PizzaBlockType> = (
-    {id, types, sizes, price, title, imageUrl}
-) => {
+const PizzaBlock = (props: PizzaBlockType) => {
+
+    const {items} = useSelector<RootState, PizzaCartStateType>(state => state.cartReducer)
+
+    function countCurrentPizza(arr: PizzaItemTypeWithCount[]){
+          const item = arr.find(el => el.id === props.pizzaItem.id)
+        return item?.count
+    }
+
+
 
     const [localStateForChangeType, setLocalStateForChangeType] = React.useState<number>(0)
     const [localStateForChangeSize, setLocalStateForChangeSize] = React.useState<number>(0)
+
+    const dispatch = useDispatch()
+
+    const onAddClickHandler = () => {
+        dispatch(addPizzaItem({...props.pizzaItem, count: 0}))
+    }
 
     const typePizza: string[] = ['тонкое', 'традиционное']
 
     return (
         <div className="pizza-block__parent">
-            <div key={id} className="pizza-block">
+            <div key={props.pizzaItem.id} className="pizza-block">
                 <img
                     className="pizza-block__image"
-                    src={imageUrl}
+                    src={props.pizzaItem.imageUrl}
                     alt="Pizza"
                 />
-                <h4 className="pizza-block__title">{title}</h4>
+                <h4 className="pizza-block__title">{props.pizzaItem.title}</h4>
                 <div className="pizza-block__selector">
                     <ul>
-                        {types.map(value => {
+                        {props.pizzaItem.types.map(value => {
                             return (
                                 <li key={value}
                                     onClick={() => setLocalStateForChangeType(value)}
@@ -44,14 +55,14 @@ const PizzaBlock: React.FC<PizzaBlockType> = (
                         })}
                     </ul>
                     <ul>
-                        {sizes.map((value, i) => <li
+                        {props.pizzaItem.sizes.map((value, i) => <li
                             key={i}
                             onClick={() => setLocalStateForChangeSize(i)}
                             className={localStateForChangeSize === i ? 'active' : ''}
                         >{value} см.</li>)}
                     </ul>
                 </div>
-                <PizzaBlockBottom price={price}/>
+                <PizzaBlockBottom price={props.pizzaItem.price} callback={onAddClickHandler} count={countCurrentPizza(items)}/>
             </div>
         </div>
 
