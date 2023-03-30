@@ -1,15 +1,15 @@
 import debounce from 'lodash.debounce';
 import React, {ChangeEvent, useCallback, useState} from 'react';
 import classes from './Search.module.scss'
+import {useDispatch} from "react-redux";
+import {changeSearchValue} from "../../redux/slices/filterSlice";
 
-type PropsType = {
-    setValueSearchInput: (value: string) => void
-}
 
-const SearchInput: React.FC<PropsType> = ({setValueSearchInput}) => {
+const SearchInput= () => {
 
     const [stateForDebounce, setStateForDebounce] = useState('')
     const [changeIconSize, setChangeIconSize] = React.useState(false)
+    const dispatch = useDispatch()
 
     const inputRef = React.useRef<HTMLInputElement>(null)
 
@@ -20,15 +20,15 @@ const SearchInput: React.FC<PropsType> = ({setValueSearchInput}) => {
 
     const onBlurHandler = () => {
         setChangeIconSize(false)
-        setValueSearchInput(stateForDebounce)
+        dispatch(changeSearchValue(stateForDebounce))
     }
 
     const updateSearchValue = useCallback(debounce((value) => {
-        setValueSearchInput(value)
+        dispatch(changeSearchValue(value))
     }, 500),[])
 
     const onClickClearHandler = () => {
-        setValueSearchInput('')
+        dispatch(changeSearchValue(''))
         setStateForDebounce('')
         inputRef.current && inputRef.current.focus()
         setChangeIconSize(true)

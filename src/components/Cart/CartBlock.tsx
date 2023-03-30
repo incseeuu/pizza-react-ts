@@ -3,14 +3,14 @@ import {Link, useNavigate} from "react-router-dom";
 import CartPizzaItem from "./CartPizzaItem/CartPizzaItem";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store";
-import {PizzaCartStateType, removeAllPizzaItems} from "../../redux/slices/cartSlice";
+import {cartSelector, PizzaCartStateType, removeAllPizzaItems} from "../../redux/slices/cartSlice";
 import CartEmpty from "./CartEmpty/CartEmpty";
 
 const CartBlock = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const {items, totalPrice} = useSelector<RootState, PizzaCartStateType>(state => state.cartReducer)
+    const {items, totalPrice} = useSelector<RootState, PizzaCartStateType>(cartSelector)
 
     const onClickRemoveAllPizzas = () => {
         dispatch(removeAllPizzaItems())

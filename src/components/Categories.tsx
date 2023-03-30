@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../redux/store";
-import {changeCategories} from "../redux/slices/filterSlice";
+import {changeCategories, sortSelector} from "../redux/slices/filterSlice";
 
 type CategoriesStateType = {
     filter: string
@@ -19,14 +19,14 @@ const categoriesState: CategoriesStateType[] = [
 
 const Categories = () => {
 
-    const categoriesChangeState = useSelector((state: RootState) => state.filterReducer.categories)
+    const {categories} = useSelector(sortSelector)
 
     const dispatch = useDispatch()
 
     const mappingCategories = categoriesState.map((el, index) => {
         return (
             <li key={index}
-                className={categoriesChangeState === el.filter ? 'active' : ''}
+                className={categories === el.filter ? 'active' : ''}
                 onClick={() => dispatch(changeCategories(el.filter))}>{el.name}</li>
         )
     })

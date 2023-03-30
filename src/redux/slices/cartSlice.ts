@@ -1,5 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { StatePizzasType } from "./pizzaSlice";
+import {stat} from "fs";
+import {RootState} from "../store";
 
 
 export type PizzaItemTypeWithCount = StatePizzasType & {
@@ -57,3 +59,5 @@ export const cartSlice = createSlice({
 export const {addPizzaItem, removePizzaItem,removeAllPizzaItems, plusPizzaItem, minusPizzaItem} = cartSlice.actions
 
 export default cartSlice.reducer
+
+export const cartSelector = (state: RootState) => state.cartReducer

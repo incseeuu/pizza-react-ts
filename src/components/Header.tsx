@@ -3,10 +3,10 @@ import logoSvg from '../assets/img/pizza-logo.svg'
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../redux/store";
-import {PizzaCartStateType} from "../redux/slices/cartSlice";
+import {cartSelector, PizzaCartStateType} from "../redux/slices/cartSlice";
 
 const Header = () => {
-    const {totalPrice, items} = useSelector<RootState, PizzaCartStateType>(state => state.cartReducer)
+    const {totalPrice, items} = useSelector<RootState, PizzaCartStateType>(cartSelector)
 
     return (
         <div className="header">

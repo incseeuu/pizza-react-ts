@@ -1,24 +1,26 @@
 import React from 'react';
-import { StatePizzasType } from '../../redux/slices/pizzaSlice';
+import {pizzaSelector, PizzaStateType} from '../../redux/slices/pizzaSlice';
 
 import PizzaBlock from "./PizzaBlock/PizzaBlock";
 import Skeleton from "./PizzaBlock/Skeleton";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store";
 
 
+const ContentContainer = () => {
 
-type ContentContainerType = {
-    state: StatePizzasType[]
-    loading: boolean
-}
+    const {items, isLoading} = useSelector<RootState,PizzaStateType>(pizzaSelector)
 
-const ContentContainer = (props: ContentContainerType) => {
-
-    if(props.loading){
+    if(isLoading === 'loading'){
         return <div className="content__items">{[...new Array(8)].map((el, index) => <Skeleton key={index}/>)}</div>}
 
-    return ( props.state.length > 0
+    if(isLoading === 'error'){
+        return <div style={{padding: '20px'}}><h2><p>При загрузке данных произошла ошибка 😥</p></h2></div>
+    }
+
+    return ( items.length > 0
             ? <div className="content__items">
-                {props.state.map(el => <PizzaBlock key={el.id} pizzaItem={el}/>)}
+                {items.map(el => <PizzaBlock key={el.id} pizzaItem={el}/>)}
             </div>
             : <h2>Ничего не найдено 😥</h2>
 

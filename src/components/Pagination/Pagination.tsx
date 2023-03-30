@@ -2,13 +2,13 @@ import React from 'react';
 import classes from './Pagination.module.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store";
-import {changePage} from "../../redux/slices/filterSlice";
+import {changePage, sortSelector} from "../../redux/slices/filterSlice";
 
 type PropsType = {}
 
 const Pagination: React.FC<PropsType> = () => {
 
-    const page = useSelector((state: RootState) => state.filterReducer.page)
+    const {page} = useSelector(sortSelector)
     const dispatch = useDispatch()
 
     return (

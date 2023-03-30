@@ -4,41 +4,37 @@ import Sort from "../components/Sort";
 import ContentContainer from "../components/ContentContainer/ContentContainer";
 import SearchInput from "../components/SearchInput/SearchInput";
 import Pagination from "../components/Pagination/Pagination";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../redux/store";
-import {pizzaApi} from "../api/api";
+import {useSelector} from "react-redux";
+import {useAppDispatch} from "../redux/store";
 import qs from "qs"
 import {useNavigate} from "react-router-dom";
-import {ActionsFilterType, changeFilters} from "../redux/slices/filterSlice";
+import {ActionsFilterType, changeFilters, sortSelector} from "../redux/slices/filterSlice";
+import {fetchPizzas} from "../redux/slices/pizzaSlice";
 
 const Home = () => {
-    const [valueSearch, setValueSearchInput] = React.useState('')
-    const [stateFromServer, setStateFromServer] = React.useState([])
-    const [loading, setLoading] = React.useState(true)
 
     //вытаскиваем стейт из redux toolkit
-    const {categories, sort, page} = useSelector((state: RootState) => state.filterReducer)
+    const {categories, sort, page, valueSearch} = useSelector(sortSelector)
+
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const isParams = useRef(false)
     const isMounted = useRef(false)
 
-    const fetchPizzas = async () => {
-        setLoading(true)
+    const getPizzas = () => {
 
         const categoriesFilter = categories === 'all' ? '' : `category=${categories}`
         const search = valueSearch ? `search=${valueSearch}` : ''
         const sortBy = sort === 'all' ? '' : `sortBy=${sort.replace('-', '')}`
         const order = sort === "-price" ? 'order=desc' : 'order=asc'
 
-
-
+        dispatch(fetchPizzas({page, categoriesFilter, search, sortBy, order}))
     }
 
     React.useEffect(() => {
 
         if (!isParams.current) {
-            fetchPizzas()
+            getPizzas()
         }
 
         isParams.current = false
@@ -81,9 +77,9 @@ const Home = () => {
                     </div>
                     <div className="content--container__title">
                         <h2 className="content__title">Все пиццы</h2>
-                        <SearchInput setValueSearchInput={setValueSearchInput}/>
+                        <SearchInput />
                     </div>
-                    <ContentContainer state={stateFromServer} loading={loading}/>
+                    <ContentContainer />
                     <Pagination/>
                 </div>
             </div>

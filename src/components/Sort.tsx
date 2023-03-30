@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import { changeSort } from '../redux/slices/filterSlice';
-import {RootState} from "../redux/store";
+import {changeSort, sortSelector} from '../redux/slices/filterSlice';
 
 type SortNameType = {
     sort: string
@@ -10,7 +9,7 @@ type SortNameType = {
 
 const Sort = () => {
 
-    const sortChangeState = useSelector((state: RootState) => state.filterReducer.sort)
+    const {sort} = useSelector(sortSelector)
     const dispatch = useDispatch()
 
     const sortName: SortNameType[] = [
@@ -55,7 +54,7 @@ const Sort = () => {
         return (
             <li
                 key={index}
-                className={sortChangeState === el.sort ? 'active' : ''}
+                className={sort === el.sort ? 'active' : ''}
                 onClick={() => onClickHandlerActiveSort(el.sort)}
                 onBlur={() => onClickHandlerActiveSort(el.sort)}
             >
@@ -63,7 +62,7 @@ const Sort = () => {
         )
     })
 
-    const sortChangeName = sortName.find(el => el.sort === sortChangeState)
+    const sortChangeName = sortName.find(el => el.sort === sort)
 
     return (
         <div className="sort" ref={sortRef}>

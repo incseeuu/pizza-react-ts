@@ -1,7 +1,7 @@
 import React from 'react';
 import PizzaBlockBottom from "./PizzaBlockBottom/PizzaBlockBottom";
 import {useDispatch, useSelector} from "react-redux";
-import {addPizzaItem, PizzaCartStateType, PizzaItemTypeWithCount} from "../../../redux/slices/cartSlice";
+import {addPizzaItem, cartSelector, PizzaCartStateType, PizzaItemTypeWithCount} from "../../../redux/slices/cartSlice";
 import {RootState} from "../../../redux/store";
 import {StatePizzasType} from '../../../redux/slices/pizzaSlice';
 
@@ -12,7 +12,7 @@ type PizzaBlockType = {
 
 const PizzaBlock = (props: PizzaBlockType) => {
 
-    const {items} = useSelector<RootState, PizzaCartStateType>(state => state.cartReducer)
+    const {items} = useSelector<RootState, PizzaCartStateType>(cartSelector)
 
     function countCurrentPizza(arr: PizzaItemTypeWithCount[]){
           const item = arr.find(el => el.id === props.pizzaItem.id)
