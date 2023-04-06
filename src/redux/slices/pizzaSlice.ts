@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {pizzaApi} from "../../api/api";
-import {stat} from "fs";
 import {RootState} from "../store";
 
 export type StatePizzasType = {
