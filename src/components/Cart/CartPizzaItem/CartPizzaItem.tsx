@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {minusPizzaItem, plusPizzaItem, removePizzaItem} from "../../../redux/slices/cartSlice";
 
 type PropsType = {
-    id: number
+    id: string
     title: string
     count: number
     price: number

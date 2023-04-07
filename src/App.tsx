@@ -11,8 +11,6 @@ import Page404 from "./pages/Page404";
 
 function App() {
 
-
-
     return (
         <div className="wrapper">
             <Header/>

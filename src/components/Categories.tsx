@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../redux/store";
 import {changeCategories, sortSelector} from "../redux/slices/filterSlice";
 
 type CategoriesStateType = {
@@ -17,7 +16,7 @@ const categoriesState: CategoriesStateType[] = [
     {filter: 'close', name: 'Закрытые'},
 ]
 
-const Categories = () => {
+const Categories = memo(() => {
 
     const {categories} = useSelector(sortSelector)
 
@@ -38,6 +37,6 @@ const Categories = () => {
             </ul>
         </div>
     );
-};
+});
 
 export default Categories;

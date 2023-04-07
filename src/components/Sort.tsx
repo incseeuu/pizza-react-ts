@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {memo, useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {changeSort, sortSelector} from '../redux/slices/filterSlice';
 
@@ -7,17 +7,17 @@ type SortNameType = {
     name: string
 }
 
-const Sort = () => {
+const sortName: SortNameType[] = [
+    {sort: 'rating', name: 'популярности'},
+    {sort: 'price', name: 'цене (возростание)'},
+    {sort: '-price', name: 'цене (убывание)'},
+    {sort: 'title', name: 'алфавиту'},
+]
+
+const Sort = memo(() => {
 
     const {sort} = useSelector(sortSelector)
     const dispatch = useDispatch()
-
-    const sortName: SortNameType[] = [
-        {sort: 'rating', name: 'популярности'},
-        {sort: 'price', name: 'цене (возростание)'},
-        {sort: '-price', name: 'цене (убывание)'},
-        {sort: 'title', name: 'алфавиту'},
-    ]
 
     const [viewSort, setViewSort] = React.useState<boolean>(false)
 
@@ -91,6 +91,6 @@ const Sort = () => {
         </div>
     )
         ;
-};
+});
 
 export default Sort;

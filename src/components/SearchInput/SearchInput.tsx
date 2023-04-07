@@ -1,11 +1,11 @@
 import debounce from 'lodash.debounce';
-import React, {ChangeEvent, useCallback, useState} from 'react';
+import React, {ChangeEvent, memo, useCallback, useState} from 'react';
 import classes from './Search.module.scss'
 import {useDispatch} from "react-redux";
 import {changeSearchValue} from "../../redux/slices/filterSlice";
 
 
-const SearchInput= () => {
+const SearchInput= memo(() => {
 
     const [stateForDebounce, setStateForDebounce] = useState('')
     const [changeIconSize, setChangeIconSize] = React.useState(false)
@@ -72,6 +72,6 @@ const SearchInput= () => {
 
         </div>
     );
-};
+});
 
 export default SearchInput;

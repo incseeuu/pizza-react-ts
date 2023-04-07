@@ -1,12 +1,14 @@
 import React from 'react';
 import logoSvg from '../assets/img/pizza-logo.svg'
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../redux/store";
 import {cartSelector, PizzaCartStateType} from "../redux/slices/cartSlice";
 
 const Header = () => {
     const {totalPrice, items} = useSelector<RootState, PizzaCartStateType>(cartSelector)
+
+    const {pathname} = useLocation()
 
     return (
         <div className="header">
@@ -20,7 +22,7 @@ const Header = () => {
                         </div>
                     </div>
                 </Link>
-                <div className="header__cart">
+                {pathname !== '/cart' && <div className="header__cart">
                     <Link to={'/cart'} className="button button--cart">
                         <span>{totalPrice} ₽</span>
                         <div className="button__delimiter"></div>
@@ -53,9 +55,9 @@ const Header = () => {
                                 strokeLinejoin="round"
                             />
                         </svg>
-                        <span>{items.reduce((acc, val) => val.count + acc,0)}</span>
+                        <span>{items.reduce((acc, val) => val.count + acc, 0)}</span>
                     </Link>
-                </div>
+                </div>}
             </div>
         </div>
     );

@@ -12,6 +12,7 @@ const CartBlock = () => {
 
     const {items, totalPrice} = useSelector<RootState, PizzaCartStateType>(cartSelector)
 
+
     const onClickRemoveAllPizzas = () => {
         dispatch(removeAllPizzaItems())
         navigate('/')

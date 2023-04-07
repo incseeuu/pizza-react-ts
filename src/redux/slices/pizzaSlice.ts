@@ -3,7 +3,7 @@ import {pizzaApi} from "../../api/api";
 import {RootState} from "../store";
 
 export type StatePizzasType = {
-    id: number
+    id: string
     imageUrl: string
     title: string
     types: PizzasTypes[]

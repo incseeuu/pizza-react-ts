@@ -1,3 +1,5 @@
+@import '../../scss/variables';
+
 .wrap {
   display: flex;
   justify-content: center;
@@ -7,9 +9,9 @@
 }
 
 .control {
-  color: #c78dfd;
+  color: $orange;
   padding: 10px 30px;
-  border: 1px solid #c78dfd;
+  border: 1px solid $orange;
   border-radius: 20px;
   //background: #e3a6f8;
   background: white;
@@ -20,7 +22,7 @@
   &:hover {
     color: white;
     cursor: pointer;
-    background: #e3a6f8;
+    background: $orange;
   }
 }
 
@@ -32,19 +34,19 @@
 .page {
   width: auto;
   height: auto;
-  color: #c78dfd;
+  color: $orange;
   padding: 10px 20px;
-  border: 1px solid #c78dfd;
+  border: 1px solid $orange;
   border-radius: 20px;
 
   &:hover {
     color: white;
     cursor: pointer;
-    background: #e3a6f8;
+    background: $orange;
   }
 }
 
 .active {
   color: white;
-  background: #e3a6f8;
+  background: $orange;
 }

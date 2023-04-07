@@ -1,6 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import { StatePizzasType } from "./pizzaSlice";
-import {stat} from "fs";
+import {StatePizzasType} from "./pizzaSlice";
 import {RootState} from "../store";
 
 
@@ -32,18 +31,15 @@ export const cartSlice = createSlice({
             }
             state.totalPrice = state.items.reduce((acc, val) => val.count * val.price + acc, 0)
         },
-        plusPizzaItem(state, action: PayloadAction<number>){
+        plusPizzaItem(state, action: PayloadAction<string>){
             state.items.map(el => el.id === action.payload ? {...el, count: el.count++} : el)
+            state.totalPrice = state.items.reduce((acc, val) => val.count * val.price + acc, 0)
         },
-        minusPizzaItem(state, action: PayloadAction<number>){
-            // state.items.map(el => el.id === action.payload ? {...el, count: el.count--} : el)
-            const findItem = state.items.find(el => el.id === action.payload)
-
-            if(findItem){
-                findItem.count--
-            }
+        minusPizzaItem(state, action: PayloadAction<string>){
+            state.items.map(el => el.id === action.payload ? {...el, count: el.count--} : el)
+            state.totalPrice = state.items.reduce((acc, val) => val.count * val.price + acc, 0)
         },
-        removePizzaItem(state, action: PayloadAction<number>){
+        removePizzaItem(state, action: PayloadAction<string>){
             state.items = state.items.filter(el => el.id !== action.payload)
             if(state.items.length === 0){
                 state.totalPrice = 0
