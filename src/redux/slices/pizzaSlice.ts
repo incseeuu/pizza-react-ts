@@ -66,9 +66,13 @@ type ParamsType = {
 export const fetchPizzas = createAsyncThunk(
     'pizza/fetchPizzaStatus', async (params: ParamsType) => {
         const {page, categoriesFilter, search, sortBy, order} = params
-        const {data} = await pizzaApi.getPizza(page, categoriesFilter, sortBy, order, search)
+        try {
+            const {data} = await pizzaApi.getPizza(page, categoriesFilter, sortBy, order, search)
+            return data
 
-        return data
+        } catch (e) {
+            alert('Something went wrong. Reload page, please')
+        }
     }
 )
 
